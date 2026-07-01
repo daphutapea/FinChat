@@ -1,0 +1,11 @@
+# Streamlit configuration for FinChat
+[server]
+headless = true
+# Disable the source file-watcher. It walks every imported module (including
+# transformers' lazy image processors that import torchvision, which we don't
+# install), producing noisy tracebacks and slow startup. We don't need
+# hot-reload for a deployed app.
+fileWatcherType = "none"
+
+[browser]
+gatherUsageStats = false

@@ -1,0 +1,30 @@
+# --- Secrets (NEVER commit) ---
+.env
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+*.log
+
+# --- Virtual environment ---
+venv/
+.venv/
+env/
+
+# --- Generated data & vector store (rebuild with ingest.py) ---
+data/
+vectorstore/
+
+# --- Model / HF cache (can be large) ---
+.cache/
+
+# --- Streamlit ---
+.streamlit/secrets.toml
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

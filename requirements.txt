@@ -1,3 +1,27 @@
-altair
-pandas
-streamlit
+# FinChat — dependencies
+# Install with:  pip install -r requirements.txt
+
+# --- RAG orchestration ---
+langchain>=0.3.0
+langchain-community>=0.3.0
+langchain-huggingface>=0.1.0     # local embedding models
+langchain-groq>=0.2.0            # free, fast LLM inference
+langchain-chroma>=0.1.4          # vector store integration
+
+# --- Vector store ---
+chromadb>=0.5.0
+
+# --- Embedding model runtime (pulls in torch, CPU is fine) ---
+sentence-transformers>=3.0.0
+
+# --- Data loading ---
+# Pinned <3.0: this dataset ships a loader script, and datasets>=3.0 removed
+# support for script-based datasets.
+datasets>=2.19.0,<3.0.0
+pandas>=2.0.0
+
+# --- Web UI ---
+streamlit>=1.38.0
+
+# --- Config / secrets ---
+python-dotenv>=1.0.0
