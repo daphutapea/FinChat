@@ -52,21 +52,21 @@ def get_vectorstore() -> Chroma:
 
 
 def ensure_index() -> None:
-    """Build the vector store on first run if it's empty or missing.
+    """Build the vector store on first run if it doesn't exist yet.
 
     Lets the app bootstrap itself on a fresh deployment (e.g. Hugging Face
     Spaces). On normal runs where the store already exists, this is a fast
     no-op.
+
+    IMPORTANT: this checks the filesystem instead of opening a Chroma client.
+    Probing with a client would create an empty database and keep it open --
+    and because chromadb caches clients per path, the subsequent rebuild
+    (delete + recreate the directory) would leave that cached client pointing
+    at deleted files, crashing with "unable to open database file".
     """
-    try:
-        has_docs = len(get_vectorstore().get(limit=1).get("ids", [])) > 0
-    except Exception:
-        has_docs = False
-    if not has_docs:
-        get_vectorstore.cache_clear()          # release the empty store handle
+    if not (config.VECTORSTORE_DIR / "chroma.sqlite3").exists():
         from src.ingest import build_index
         build_index()
-        get_vectorstore.cache_clear()           # reopen the freshly built store
 
 
 @lru_cache(maxsize=1)
