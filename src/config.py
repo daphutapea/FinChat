@@ -10,14 +10,20 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = PROJECT_ROOT / "data"
 
-# Keep the vector store OUTSIDE OneDrive. OneDrive syncs files as they're
-# written, which locks ChromaDB's SQLite database mid-write on Windows
-# (PermissionError / possible corruption). The store is disposable -- it's
-# rebuilt by ingest.py -- so its location doesn't matter to the repo.
-# Override with the FINCHAT_VECTORSTORE env var (e.g. on Hugging Face Spaces).
-VECTORSTORE_DIR = Path(
-    os.getenv("FINCHAT_VECTORSTORE", str(Path.home() / ".finchat" / "vectorstore"))
+# Where ChromaDB persists the index. The store is disposable -- it's rebuilt
+# by ingest.py -- so its location doesn't matter to the repo. Requirements:
+#   - Windows: keep it OUTSIDE OneDrive (OneDrive syncs files mid-write and
+#     locks ChromaDB's SQLite database) -> use the user's home dir.
+#   - Linux containers (e.g. Hugging Face Spaces): the home dir may not be
+#     writable, which makes chromadb's storage engine fail to start -> use
+#     /tmp, which is writable in any container.
+# Override either default with the FINCHAT_VECTORSTORE env var.
+_default_store = (
+    Path.home() / ".finchat" / "vectorstore"
+    if os.name == "nt"
+    else Path("/tmp/finchat/vectorstore")
 )
+VECTORSTORE_DIR = Path(os.getenv("FINCHAT_VECTORSTORE", str(_default_store)))
 
 # --- Dataset (Hugging Face) -------------------------------------------------
 # Each row is ONE sentence from a 10-K filing. ingest.py reassembles the

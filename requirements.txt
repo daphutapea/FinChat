@@ -1,27 +1,31 @@
 # FinChat — dependencies
 # Install with:  pip install -r requirements.txt
+#
+# Versions are PINNED to the combination verified end-to-end locally
+# (Python 3.12). Unpinned installs on other platforms resolved a different
+# stack and broke chromadb's storage engine at startup.
 
 # --- RAG orchestration ---
-langchain>=0.3.0
-langchain-community>=0.3.0
-langchain-huggingface>=0.1.0     # local embedding models
-langchain-groq>=0.2.0            # free, fast LLM inference
-langchain-chroma>=0.1.4          # vector store integration
+langchain==1.3.11
+langchain-community==0.4.2
+langchain-huggingface==1.2.2     # local embedding models
+langchain-groq==1.1.3            # free, fast LLM inference
+langchain-chroma==1.1.0          # vector store integration
 
 # --- Vector store ---
-chromadb>=0.5.0
+chromadb==1.5.9
 
 # --- Embedding model runtime (pulls in torch, CPU is fine) ---
-sentence-transformers>=3.0.0
+sentence-transformers==5.6.0
 
 # --- Data loading ---
-# Pinned <3.0: this dataset ships a loader script, and datasets>=3.0 removed
-# support for script-based datasets.
-datasets>=2.19.0,<3.0.0
-pandas>=2.0.0
+# datasets must stay <3.0: this dataset ships a loader script, and
+# datasets>=3.0 removed support for script-based datasets.
+datasets==2.21.0
+pandas==3.0.3
 
 # --- Web UI ---
-streamlit>=1.38.0
+streamlit==1.58.0
 
 # --- Config / secrets ---
-python-dotenv>=1.0.0
+python-dotenv==1.2.2
