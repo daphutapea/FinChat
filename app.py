@@ -32,6 +32,14 @@ with st.sidebar:
         st.markdown(f"- **{ticker}** — {name}")
     st.caption("Source: SEC 10-K filings, 2017–2020.")
 
+# --- starter questions (clickable examples) ---------------------------------
+STARTER_QUESTIONS = [
+    "What are AMD's main business risks?",
+    "What are Abbott's business segments?",
+    "What is Air Products' primary business?",
+    "What does Matson's logistics business do?",
+]
+
 # --- chat history -----------------------------------------------------------
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -40,8 +48,19 @@ for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
 
+# Clickable examples, shown only until the first question is asked.
+if not st.session_state.messages and "pending" not in st.session_state:
+    st.markdown("**Try one of these to get started:**")
+    cols = st.columns(2)
+    for i, example in enumerate(STARTER_QUESTIONS):
+        if cols[i % 2].button(example, use_container_width=True):
+            st.session_state.pending = example
+            st.rerun()
+
 # --- new question -----------------------------------------------------------
-if prompt := st.chat_input("e.g. What were AMD's main risk factors?"):
+# A question can arrive from the chat box or from a starter button.
+prompt = st.chat_input("e.g. What were AMD's main risk factors?") or st.session_state.pop("pending", None)
+if prompt:
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)

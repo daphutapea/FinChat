@@ -20,8 +20,7 @@ citations** — instead of making things up.
 
 > Portfolio project · Retrieval-Augmented Generation over financial documents.
 
-<!-- After deploying, add your live link here:
-**🔗 Live demo:** https://huggingface.co/spaces/<your-username>/finchat -->
+**🔗 Live demo:** <https://huggingface.co/spaces/dahutapea/Finchat>
 
 ---
 
