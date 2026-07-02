@@ -30,7 +30,7 @@ with st.sidebar:
     st.header("📚 Companies loaded")
     for ticker, name in available_companies():
         st.markdown(f"- **{ticker}** — {name}")
-    st.caption("Source: SEC 10-K filings, 2017–2020.")
+    st.caption("Source: recent SEC 10-K filings (FY2021–2023).")
 
 # --- starter questions (clickable examples) ---------------------------------
 STARTER_QUESTIONS = [
