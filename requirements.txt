@@ -18,8 +18,11 @@ chromadb==1.5.9
 # --- Embedding model runtime (pulls in torch, CPU is fine) ---
 sentence-transformers==5.6.0
 
-# --- Data loading ---
-# datasets must stay <3.0: this dataset ships a loader script, and
+# --- SEC filings source ---
+edgartools==5.40.1               # fetches & extracts 10-K text from SEC EDGAR
+
+# --- Data loading (FinanceBench evaluation set) ---
+# datasets must stay <3.0: FinanceBench-adjacent script datasets need it, and
 # datasets>=3.0 removed support for script-based datasets.
 datasets==2.21.0
 pandas==3.0.3

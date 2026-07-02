@@ -34,10 +34,10 @@ with st.sidebar:
 
 # --- starter questions (clickable examples) ---------------------------------
 STARTER_QUESTIONS = [
-    "What are AMD's main business risks?",
-    "What are Abbott's business segments?",
-    "What is Air Products' primary business?",
-    "What does Matson's logistics business do?",
+    "What are Boeing's business segments?",
+    "What are the main risks AMD identifies?",
+    "What products and services does Microsoft offer?",
+    "Which geographies does PepsiCo operate in?",
 ]
 
 # --- chat history -----------------------------------------------------------
