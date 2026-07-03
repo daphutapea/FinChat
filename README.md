@@ -32,8 +32,8 @@ citations** — instead of making things up.
   question is about and searches *only* that company's filings via metadata
   filtering, with graceful semantic fallback when the company is ambiguous.
 - **Refuses to hallucinate** — if the answer isn't in the filings, it says so.
-- **Benchmarked** — an LLM-as-judge evaluation scores answers against a
-  curated gold set (see [Evaluation](#-evaluation)).
+- **Benchmarked** — evaluated by an LLM-as-judge on a capability gold set
+  (100%) and the external FinanceBench benchmark (see [Evaluation](#-evaluation)).
 - **100% free stack** — local embeddings + a free LLM API. No paid keys.
 
 ---
@@ -42,7 +42,7 @@ citations** — instead of making things up.
 
 ```
 INGESTION (once)
-  10-K sentences ──► reassemble into sections ──► split into chunks
+  fetch recent 10-Ks from SEC EDGAR ──► split into chunks
         ──► embed (local model) ──► store vectors + metadata in ChromaDB
 
 QUERY (per question)
@@ -57,12 +57,13 @@ QUERY (per question)
 | Vector store  | ChromaDB (persisted locally)                      |
 | LLM           | Llama 3.3 70B via Groq (free)                     |
 | UI            | Streamlit                                         |
-| Data          | `JanosAudran/financial-reports-sec` (10-K text)   |
-| Evaluation    | Curated gold set + LLM-as-judge                   |
+| Data          | Recent SEC 10-K filings via `edgartools` (EDGAR)  |
+| Evaluation    | Capability gold set + FinanceBench, LLM-as-judge  |
 
-**Companies in the demo corpus (2017–2020 filings):** AMD, Abbott (ABT),
-Air Products (APD), AAR Corp (AIR), Matson (MATX). Swap them in
-[`src/config.py`](src/config.py).
+**Corpus — 18 recognizable companies (FY2021–2023 10-Ks):** AMD, American
+Express, Boeing, PepsiCo, Amcor, 3M, Johnson & Johnson, CVS Health, Pfizer,
+AES, Verizon, Best Buy, Adobe, Ulta Beauty, Coca-Cola, Microsoft, Nike, and
+Corning. Edit the list in [`src/config.py`](src/config.py).
 
 ---
 
@@ -84,58 +85,63 @@ pip install -r requirements.txt
 ## 🛠️ Usage
 
 ```bash
-python -m src.ingest --list     # see which companies are available
-python -m src.ingest            # build the vector store (run once)
+python -m src.ingest            # fetch filings from EDGAR + build the index (once)
 streamlit run app.py            # launch the chatbot
-python -m eval.run_eval         # run the evaluation
+python -m eval.run_gold         # capability eval (qualitative Q&A)
+python -m eval.run_eval         # FinanceBench eval
 ```
 
 ---
 
 ## 📊 Evaluation
 
-FinChat is graded by an **LLM-as-judge** against a **12-question curated gold
-set** whose reference answers are written from the 2017–2020 filings in the
-corpus (see [`eval/gold_set.py`](eval/gold_set.py)). Full report:
-[`eval/results.md`](eval/results.md).
+FinChat is graded by an **LLM-as-judge** two ways: on the task it's built for,
+and against a hard external benchmark.
 
-| Metric | top-5 (baseline) | **top-8 (tuned)** |
-|---|---|---|
-| CORRECT / PARTIAL / INCORRECT | 7 / 4 / 1 | **10 / 2 / 0** |
-| **Accuracy** (CORRECT=1, PARTIAL=0.5) | 75% | **92%** |
+**1. Capability — qualitative document Q&A**
+([`eval/gold_results.md`](eval/gold_results.md))
 
-Increasing retrieval depth from **top-5 to top-8 chunks** lifted accuracy from
-**75% → 92%** and eliminated the incorrect answer, with **no regressions** — the
-earlier misses were passages that existed in the filings but fell just outside
-the top-5.
+A 12-question gold set (business, segments, products) across the corpus, with
+reference answers from the filings.
 
-**Error analysis (remaining misses)**
-- ✅ Structural questions (segments, services, products, primary business) are
-  answered correctly across all companies.
-- ⚠️ The 2 remaining PARTIALs are exhaustive-list / framing recall gaps: the
-  risk-factor answer omits "competition," and the Matson answer omits the
-  "China" expedited service — the relevant passage is worded differently from
-  the question.
+| CORRECT | PARTIAL | INCORRECT | Accuracy |
+|---|---|---|---|
+| 12 | 0 | 0 | **100%** |
 
-*A corpus-aligned gold set was used because the dataset ends in 2020 while the
-FinanceBench benchmark targets 2018–2023 filings, so direct benchmark overlap
-is thin.*
+**2. FinanceBench — hard external benchmark**
+([`eval/results.md`](eval/results.md))
+
+Scored on [FinanceBench](https://huggingface.co/datasets/PatronusAI/financebench)
+questions whose company + fiscal year is in the corpus.
+
+| Accuracy | By question type |
+|---|---|
+| **20%** (6/30) | domain-relevant 24% · novel-generated 14% · metrics-generated 0% |
+
+**What the gap means:** FinanceBench is dominated by *numeric financial-analysis*
+questions (quick ratios, margin trends, EBITDA) that require computation over
+statement tables — beyond text-retrieval RAG. FinChat's 20% is in line with the
+benchmark's known difficulty (GPT-4 in a naive RAG setup scores ~19%). FinChat
+is reliable at the qualitative retrieval it's designed for (100% above); closing
+the numeric gap would need a financial-statement **calculation layer** — noted
+as future work.
 
 ---
 
 ## ☁️ Deployment
 
-Deploy to Hugging Face Spaces (free) — see **[DEPLOY.md](DEPLOY.md)** for
-step-by-step instructions. The app **self-builds** the vector store on first
-load, so no prebuilt index is required.
+Deployed to Hugging Face Spaces (free) — see **[DEPLOY.md](DEPLOY.md)**. The
+~16k-chunk vector store is prebuilt and shipped with the repo via **git-lfs**,
+so the Space starts instantly with no rebuild; `config.py` auto-detects the
+committed index.
 
 ---
 
 ## ⚠️ Limitations
 
-- Answers are only as good as the retrieved passages; **numeric/table**
-  questions are the hardest part of financial RAG.
-- The corpus is scoped to 5 companies / recent years to stay laptop-friendly.
+- **Numeric/analytical** questions (ratios, margins) require computation over
+  financial-statement tables — the main gap (see Evaluation).
+- The corpus is scoped to 18 companies' recent 10-Ks to stay laptop-friendly.
 - Not financial advice — a portfolio/educational project.
 
 ---
@@ -146,13 +152,14 @@ load, so no prebuilt index is required.
 .
 ├── app.py                 # Streamlit chat UI
 ├── src/
-│   ├── config.py          # all tunable settings
-│   ├── ingest.py          # build the vector store (load→section→chunk→embed→store)
+│   ├── config.py          # all tunable settings (target companies, models)
+│   ├── ingest.py          # fetch 10-Ks from EDGAR → chunk → embed → store
 │   └── rag.py             # retrieval + generation + query routing
 ├── eval/
-│   ├── gold_set.py        # curated questions + reference answers
-│   ├── run_eval.py        # LLM-as-judge evaluation harness
-│   └── results.md         # latest evaluation report
+│   ├── gold_set.py        # capability questions + reference answers
+│   ├── run_gold.py        # capability eval (qualitative Q&A)
+│   ├── run_eval.py        # FinanceBench eval harness
+│   └── *_results.md       # evaluation reports
 ├── .streamlit/config.toml # Streamlit settings
 ├── requirements.txt
 ├── .env.example           # template for your API key

@@ -1,137 +1,114 @@
-"""Curated evaluation set for FinChat.
+"""Qualitative capability gold set for FinChat (18-company EDGAR corpus).
 
-Each item is a question plus a concise REFERENCE answer written from the actual
-2017-2020 10-K filings in the corpus (verified against retrieved passages).
-run_eval.py runs FinChat on each question and grades its answer against the
-reference with an LLM-as-judge.
+These are document-Q&A questions (business, segments, products, geographies) --
+the task FinChat is designed for -- with reference answers from the companies'
+10-K filings. run_gold.py grades FinChat against them with an LLM-as-judge.
 
-This exists because the corpus ends in 2020, while the FinanceBench benchmark
-targets 2018-2023 filings -- so a corpus-aligned gold set gives a fair,
-meaningful accuracy number.
+This complements run_eval.py (FinanceBench), which is dominated by numeric
+financial-analysis questions that text RAG cannot compute.
 """
 
 GOLD_SET = [
     {
+        "company": "Boeing",
+        "question": "What are Boeing's business segments?",
+        "reference": (
+            "Boeing operates through four segments: Commercial Airplanes; "
+            "Defense, Space & Security; Global Services; and Boeing Capital."
+        ),
+    },
+    {
+        "company": "Microsoft",
+        "question": "What are Microsoft's reportable segments?",
+        "reference": (
+            "Microsoft reports in three segments: Productivity and Business "
+            "Processes; Intelligent Cloud; and More Personal Computing."
+        ),
+    },
+    {
         "company": "AMD",
         "question": "What products does AMD design and sell?",
         "reference": (
-            "AMD is a global semiconductor company. Its products include x86 "
-            "microprocessors (CPUs), accelerated processing units (APUs) that "
-            "integrate CPUs with graphics, discrete graphics processing units "
-            "(GPUs), and semi-custom System-on-Chip (SoC) products. Brands "
-            "include Ryzen and Threadripper CPUs, EPYC server processors, and "
-            "Radeon graphics."
+            "AMD designs and sells microprocessors (CPUs), graphics processors "
+            "(GPUs), accelerated processing units (APUs), adaptive/FPGA products "
+            "(from Xilinx), and semi-custom System-on-Chip products. Brands "
+            "include Ryzen, EPYC, Radeon, and Instinct."
         ),
     },
     {
-        "company": "AMD",
-        "question": "How are AMD's products manufactured?",
+        "company": "Verizon",
+        "question": "What are Verizon's reportable segments?",
+        "reference": "Verizon reports in two segments: Consumer and Business.",
+    },
+    {
+        "company": "Nike",
+        "question": "What products and brands does Nike sell?",
         "reference": (
-            "AMD is a fabless semiconductor company and does not own the "
-            "foundries that make its chips. It relies on third-party foundries, "
-            "notably GlobalFoundries (with which it has a wafer supply "
-            "agreement) and TSMC, to manufacture its microprocessor, APU, and "
-            "GPU products."
+            "Nike sells athletic footwear, apparel, equipment, and accessories. "
+            "Its brands include NIKE, Jordan, and Converse."
         ),
     },
     {
-        "company": "AMD",
-        "question": "What are some key risk factors AMD identifies?",
+        "company": "Coca-Cola",
+        "question": "What is Coca-Cola's business?",
         "reference": (
-            "Risks include intense competition (such as Intel in CPUs and "
-            "Nvidia in GPUs), dependence on third-party foundries like "
-            "GlobalFoundries and TSMC for manufacturing, the need to launch "
-            "competitive products on time, reliance on a limited number of "
-            "customers and third-party products, and general economic and "
-            "market conditions."
+            "Coca-Cola is a total beverage company that manufactures and sells "
+            "nonalcoholic beverage concentrates, syrups, and finished beverages. "
+            "Its brands include Coca-Cola, Sprite, and Fanta."
         ),
     },
     {
-        "company": "AMD",
-        "question": "Does AMD make chips for game consoles or other semi-custom customers?",
+        "company": "Pfizer",
+        "question": "What is Pfizer's primary business?",
         "reference": (
-            "Yes. AMD designs and sells semi-custom SoC products, including "
-            "chips used in game consoles, and earns semi-custom revenue from "
-            "third-party customers."
+            "Pfizer is a research-based biopharmaceutical company that discovers, "
+            "develops, manufactures, and sells medicines and vaccines, including "
+            "the Comirnaty COVID-19 vaccine and Paxlovid."
         ),
     },
     {
-        "company": "ABT",
-        "question": "What are Abbott's main business segments?",
+        "company": "PepsiCo",
+        "question": "What kinds of products does PepsiCo sell?",
         "reference": (
-            "Abbott operates through four reportable segments: Established "
-            "Pharmaceutical Products, Diagnostic Products, Nutritional "
-            "Products, and Medical Devices."
+            "PepsiCo makes and sells convenient foods (snacks) and beverages. "
+            "Its brands include Pepsi, Lay's, Gatorade, Quaker, and Tropicana, "
+            "sold across North America and international markets."
         ),
     },
     {
-        "company": "ABT",
-        "question": "What does Abbott's diagnostics business provide?",
+        "company": "American Express",
+        "question": "What is American Express's primary business?",
         "reference": (
-            "Abbott's diagnostics business provides in vitro diagnostic systems "
-            "and tests, including core laboratory diagnostics (immunoassay, "
-            "clinical chemistry, hematology, and blood screening), molecular "
-            "diagnostics, point-of-care, and rapid diagnostics, including its "
-            "Alinity family of instruments."
+            "American Express is a globally integrated payments company. It "
+            "issues charge and credit cards and provides merchant acquiring and "
+            "card-network services."
         ),
     },
     {
-        "company": "APD",
-        "question": "What is Air Products' primary business?",
+        "company": "Best Buy",
+        "question": "What is Best Buy's business and where does it operate?",
         "reference": (
-            "Air Products is a world-leading industrial gases company. It "
-            "produces and sells atmospheric gases (such as oxygen, nitrogen, "
-            "and argon), process and specialty gases, related equipment, and "
-            "services."
+            "Best Buy is a retailer of technology products -- consumer "
+            "electronics, computing, mobile phones, and appliances -- operating "
+            "through a Domestic (U.S.) segment and an International (Canada) "
+            "segment."
         ),
     },
     {
-        "company": "APD",
-        "question": "Which industries or end markets does Air Products serve?",
+        "company": "Johnson & Johnson",
+        "question": "What are Johnson & Johnson's business segments?",
         "reference": (
-            "Air Products serves customers globally across the energy, "
-            "electronics, chemicals, metals, and manufacturing markets."
+            "Johnson & Johnson operates through three segments: Consumer Health, "
+            "Pharmaceutical, and MedTech (Medical Devices)."
         ),
     },
     {
-        "company": "AIR",
-        "question": "What business segments does AAR Corp operate?",
+        "company": "Amcor",
+        "question": "What does Amcor make and what industry is it in?",
         "reference": (
-            "AAR operates two reportable segments: Aviation Services and "
-            "Expeditionary Services. It is a diversified provider of products "
-            "and services to the worldwide commercial aviation and government "
-            "and defense markets."
-        ),
-    },
-    {
-        "company": "AIR",
-        "question": "What services does AAR provide to the aviation industry?",
-        "reference": (
-            "AAR provides aftermarket aviation support: it sells and leases "
-            "new, overhauled, and repaired engine and airframe parts and "
-            "components; provides maintenance, repair and overhaul (MRO) and "
-            "component inventory and repair programs; and offers supply-chain "
-            "and expeditionary/airlift services to commercial and "
-            "government/defense customers."
-        ),
-    },
-    {
-        "company": "MATX",
-        "question": "What geographic markets does Matson's ocean transportation serve?",
-        "reference": (
-            "Matson's ocean transportation serves the domestic non-contiguous "
-            "U.S. economies of Hawaii, Alaska, and Guam, other island economies "
-            "in Micronesia, and provides an expedited service from China."
-        ),
-    },
-    {
-        "company": "MATX",
-        "question": "What does Matson's logistics business do?",
-        "reference": (
-            "Matson Logistics provides transportation brokerage, intermodal "
-            "rail and highway services, less-than-container-load consolidation, "
-            "freight forwarding, warehousing and distribution, and supply-chain "
-            "management services."
+            "Amcor is a global packaging company that develops and produces "
+            "flexible and rigid packaging for food, beverage, pharmaceutical, "
+            "medical, and home and personal care products."
         ),
     },
 ]
