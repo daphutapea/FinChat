@@ -24,6 +24,7 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_chroma import Chroma
 
 from src import config
+from src.financials import financial_documents
 
 # Windows consoles default to cp1252 and crash when print() emits Unicode
 # (arrows, em-dashes, curly quotes from filings). Force UTF-8 output.
@@ -33,8 +34,8 @@ except Exception:
     pass
 
 
-def fetch_filing(ticker: str, fiscal_year: int) -> tuple[str, str] | None:
-    """Return (text, accession_no) for the 10-K whose fiscal period matches.
+def get_filing(ticker: str, fiscal_year: int):
+    """Return the 10-K filing whose fiscal period matches fiscal_year, else None.
 
     Matches on the filing's period_of_report year, so an offset fiscal year
     (e.g. Amcor's June close) still resolves to the right filing.
@@ -42,12 +43,12 @@ def fetch_filing(ticker: str, fiscal_year: int) -> tuple[str, str] | None:
     for f in Company(ticker).get_filings(form="10-K"):
         period = getattr(f, "period_of_report", None)
         if period and str(period)[:4] == str(fiscal_year):
-            return f.text(), f.accession_no
+            return f
     return None
 
 
 def fetch_documents() -> list[Document]:
-    """Fetch every target filing and split it into chunked LangChain Documents."""
+    """Fetch every target filing -> text chunks + structured financial facts."""
     set_identity(config.EDGAR_IDENTITY)
     splitter = RecursiveCharacterTextSplitter(
         chunk_size=config.CHUNK_SIZE,
@@ -57,11 +58,13 @@ def fetch_documents() -> list[Document]:
     docs: list[Document] = []
     for ticker, name, year in config.TARGET_FILINGS:
         print(f"Fetching {ticker} FY{year} 10-K ...", end=" ", flush=True)
-        result = fetch_filing(ticker, year)
-        if result is None:
+        filing = get_filing(ticker, year)
+        if filing is None:
             print("NOT FOUND -- skipping")
             continue
-        text, accession = result
+
+        # 1) Filing TEXT -> chunks (for qualitative questions).
+        text = filing.text()
         source = f"{name} 10-K (FY{year})"
         for chunk in splitter.split_text(text):
             docs.append(
@@ -71,12 +74,19 @@ def fetch_documents() -> list[Document]:
                         "ticker": ticker,
                         "company": name,
                         "year": str(year),
-                        "accession": accession,
+                        "accession": filing.accession_no,
                         "source": source,
+                        "type": "text",
                     },
                 )
             )
-        print(f"{len(text):,} chars -> {len(docs)} chunks so far")
+
+        # 2) XBRL FINANCIAL STATEMENTS -> structured facts (numeric questions).
+        fin_docs = financial_documents(filing, ticker, name, year)
+        docs.extend(fin_docs)
+
+        print(f"{len(text):,} chars + {len(fin_docs)} financial statements "
+              f"-> {len(docs)} docs so far")
         time.sleep(0.5)   # be polite to SEC's servers
     return docs
 

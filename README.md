@@ -28,6 +28,12 @@ citations** — instead of making things up.
 
 - **Grounded answers with citations** — every response is backed by excerpts
   from real 10-K filings, shown in an expandable *Sources* panel.
+- **Answers financial figures (hybrid RAG)** — plain text RAG can't read numbers
+  out of financial-statement tables. FinChat also extracts each filing's
+  **XBRL** structured financials (revenue, net income, assets, cash flow…) and
+  a hybrid retriever *guarantees* those facts are in context for numeric
+  questions — so *"What was Apple's FY2023 revenue?"* returns **$383.29 billion**,
+  not a shrug.
 - **Query routing ("knows where to look")** — FinChat detects which company a
   question is about and searches *only* that company's filings via metadata
   filtering, with graceful semantic fallback when the company is ambiguous.
@@ -41,13 +47,14 @@ citations** — instead of making things up.
 ## 🏗️ Architecture
 
 ```
-INGESTION (once)
-  fetch recent 10-Ks from SEC EDGAR ──► split into chunks
-        ──► embed (local model) ──► store vectors + metadata in ChromaDB
+INGESTION (once) — two tracks per filing
+  10-K TEXT       ──► split into chunks ───────────┐
+  XBRL FINANCIALS ──► "label: value" fact chunks ──┴─► embed ──► ChromaDB
 
 QUERY (per question)
-  question ──► detect company ──► embed ──► search (filtered by company)
-        ──► top-k chunks ──► LLM ──► grounded answer + citations
+  question ──► detect company ──► HYBRID retrieve
+        (semantic text chunks + guaranteed XBRL statements for numeric Qs)
+        ──► LLM ──► grounded answer + citations
 ```
 
 | Layer         | Tool                                              |
@@ -57,7 +64,7 @@ QUERY (per question)
 | Vector store  | ChromaDB (persisted locally)                      |
 | LLM           | Llama 3.3 70B via Groq (free)                     |
 | UI            | Streamlit                                         |
-| Data          | Recent SEC 10-K filings via `edgartools` (EDGAR)  |
+| Data          | SEC 10-K text **+ XBRL financials** via `edgartools` |
 | Evaluation    | Capability gold set + FinanceBench, LLM-as-judge  |
 
 **Corpus — 25 recognizable companies (FY2021–2024 10-Ks):** Apple, Microsoft,
@@ -140,8 +147,9 @@ committed index.
 
 ## ⚠️ Limitations
 
-- **Numeric/analytical** questions (ratios, margins) require computation over
-  financial-statement tables — the main gap (see Evaluation).
+- **Direct financial figures** (revenue, net income, assets, cash flow) are now
+  answered from XBRL data. **Computed metrics** (ratios, margin trends,
+  EBITDA-less-capex) still need a calculation layer — the next enhancement.
 - The corpus is scoped to 25 companies' recent 10-Ks to stay laptop-friendly.
 - Not financial advice — a portfolio/educational project.
 

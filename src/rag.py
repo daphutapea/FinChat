@@ -146,13 +146,43 @@ def detect_ticker(question: str) -> str | None:
     return None
 
 
+# Terms that signal a numeric/financial question -> pull in the XBRL statements.
+_FINANCIAL_TERMS = (
+    "revenue", "sales", "income", "earnings", "profit", "margin", "ebitda",
+    "asset", "liabilit", "equity", "cash flow", "cash", "debt", "expense",
+    "eps", "per share", "how much", "dividend", "operating", "gross", "net ",
+    "balance sheet", "capital", "ratio",
+)
+
+
+def _is_financial_query(question: str) -> bool:
+    q = question.lower()
+    return any(term in q for term in _FINANCIAL_TERMS)
+
+
 def retrieve(question: str, ticker: str | None):
     store = get_vectorstore()
     search_kwargs: dict = {"k": config.TOP_K}
     if ticker:
         # Metadata filter = search ONLY that company's filings.
         search_kwargs["filter"] = {"ticker": ticker}
-    return store.as_retriever(search_kwargs=search_kwargs).invoke(question)
+    docs = store.as_retriever(search_kwargs=search_kwargs).invoke(question)
+
+    # Hybrid step: for a numeric/financial question about a known company,
+    # guarantee that company's structured XBRL statements are in context --
+    # they can otherwise be out-ranked by revenue *discussion* in the filing
+    # text (as happens for Apple).
+    if ticker and _is_financial_query(question):
+        fin = store.as_retriever(
+            search_kwargs={
+                "k": 2,
+                "filter": {"$and": [{"ticker": ticker}, {"type": "financials"}]},
+            }
+        ).invoke(question)
+        seen = {d.page_content[:80] for d in fin}
+        rest = [d for d in docs if d.page_content[:80] not in seen]
+        docs = (fin + rest)[: config.TOP_K]
+    return docs
 
 
 def format_context(docs) -> str:
