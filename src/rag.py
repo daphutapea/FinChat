@@ -175,7 +175,7 @@ def retrieve(question: str, ticker: str | None):
     if ticker and _is_financial_query(question):
         fin = store.as_retriever(
             search_kwargs={
-                "k": 2,
+                "k": 3,
                 "filter": {"$and": [{"ticker": ticker}, {"type": "financials"}]},
             }
         ).invoke(question)

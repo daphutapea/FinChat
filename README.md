@@ -109,37 +109,38 @@ and against a hard external benchmark.
 **1. Capability — qualitative document Q&A**
 ([`eval/gold_results.md`](eval/gold_results.md))
 
-A 12-question gold set (business, segments, products) across the corpus, with
+A 15-question gold set (business, segments, products) across the corpus, with
 reference answers from the filings.
 
 | CORRECT | PARTIAL | INCORRECT | Accuracy |
 |---|---|---|---|
-| 12 | 0 | 0 | **100%** |
+| 13 | 2 | 0 | **93%** |
 
 **2. FinanceBench — hard external benchmark**
 ([`eval/results.md`](eval/results.md))
 
 Scored on [FinanceBench](https://huggingface.co/datasets/PatronusAI/financebench)
-questions whose company + fiscal year is in the corpus.
+questions whose company + fiscal year is in the corpus. Adding the **hybrid XBRL
+financials + computed-ratios layer** more than **doubled** the score:
 
-| Accuracy | By question type |
-|---|---|
-| **20%** (6/30) | domain-relevant 24% · novel-generated 14% · metrics-generated 0% |
+| Setup | Accuracy | metrics-generated | domain-relevant |
+|---|---|---|---|
+| Text-only RAG | 20% (6/30) | 0% | 24% |
+| **+ XBRL financials & ratios** | **45%** (13.5/30) | **50%** | **50%** |
 
-**What the gap means:** FinanceBench is dominated by *numeric financial-analysis*
-questions (quick ratios, margin trends, EBITDA) that require computation over
-statement tables — beyond text-retrieval RAG. FinChat's 20% is in line with the
-benchmark's known difficulty (GPT-4 in a naive RAG setup scores ~19%). FinChat
-is reliable at the qualitative retrieval it's designed for (100% above); closing
-the numeric gap would need a financial-statement **calculation layer** — noted
-as future work.
+The jump comes from numeric questions the text-only system couldn't touch —
+quick ratio, gross-margin change, inventory turnover, working capital, dividend
+payout — now answered from structured data. The remaining gap is **multi-step
+reasoning** (*"excluding M&A, which segment dragged margins?"*), which needs
+deeper analytical logic (future work). For context, GPT-4 in a naive RAG setup
+scores **~19%** on FinanceBench.
 
 ---
 
 ## ☁️ Deployment
 
 Deployed to Hugging Face Spaces (free) — see **[DEPLOY.md](DEPLOY.md)**. The
-~16k-chunk vector store is prebuilt and shipped with the repo via **git-lfs**,
+~21k-chunk vector store is prebuilt and shipped with the repo via **git-lfs**,
 so the Space starts instantly with no rebuild; `config.py` auto-detects the
 committed index.
 
@@ -147,9 +148,10 @@ committed index.
 
 ## ⚠️ Limitations
 
-- **Direct financial figures** (revenue, net income, assets, cash flow) are now
-  answered from XBRL data. **Computed metrics** (ratios, margin trends,
-  EBITDA-less-capex) still need a calculation layer — the next enhancement.
+- **Financial figures and standard ratios** (margins, liquidity, returns, FCF)
+  are answered from XBRL data + deterministic computation. **Multi-step
+  analytical reasoning** (e.g. segment-level margin attribution) is the
+  remaining gap.
 - The corpus is scoped to 25 companies' recent 10-Ks to stay laptop-friendly.
 - Not financial advice — a portfolio/educational project.
 
