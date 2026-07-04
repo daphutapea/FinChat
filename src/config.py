@@ -62,6 +62,14 @@ TARGET_FILINGS = [
     ("MSFT", "Microsoft",               2023),
     ("NKE",  "Nike",                    2023),
     ("GLW",  "Corning",                 2022),
+    # --- Added mega-caps (recent filings) ---
+    ("AAPL", "Apple",                   2023),
+    ("GOOGL", "Alphabet (Google)",      2023),
+    ("AMZN", "Amazon",                  2023),
+    ("NVDA", "NVIDIA",                  2024),
+    ("TSLA", "Tesla",                   2023),
+    ("JPM",  "JPMorgan Chase",          2023),
+    ("WMT",  "Walmart",                 2024),
 ]
 
 # --- Chunking ---------------------------------------------------------------

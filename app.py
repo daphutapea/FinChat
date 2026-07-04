@@ -34,10 +34,10 @@ with st.sidebar:
 
 # --- starter questions (clickable examples) ---------------------------------
 STARTER_QUESTIONS = [
+    "What products does Apple sell?",
+    "What does NVIDIA design and sell?",
     "What are Boeing's business segments?",
     "What are the main risks AMD identifies?",
-    "What products and services does Microsoft offer?",
-    "Which geographies does PepsiCo operate in?",
 ]
 
 # --- chat history -----------------------------------------------------------

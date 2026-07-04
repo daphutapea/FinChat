@@ -60,9 +60,10 @@ QUERY (per question)
 | Data          | Recent SEC 10-K filings via `edgartools` (EDGAR)  |
 | Evaluation    | Capability gold set + FinanceBench, LLM-as-judge  |
 
-**Corpus — 18 recognizable companies (FY2021–2023 10-Ks):** AMD, American
-Express, Boeing, PepsiCo, Amcor, 3M, Johnson & Johnson, CVS Health, Pfizer,
-AES, Verizon, Best Buy, Adobe, Ulta Beauty, Coca-Cola, Microsoft, Nike, and
+**Corpus — 25 recognizable companies (FY2021–2024 10-Ks):** Apple, Microsoft,
+Alphabet (Google), Amazon, NVIDIA, Tesla, AMD, JPMorgan Chase, American
+Express, Boeing, Walmart, PepsiCo, Coca-Cola, Amcor, 3M, Johnson & Johnson,
+CVS Health, Pfizer, AES, Verizon, Best Buy, Adobe, Ulta Beauty, Nike, and
 Corning. Edit the list in [`src/config.py`](src/config.py).
 
 ---

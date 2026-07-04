@@ -111,4 +111,29 @@ GOLD_SET = [
             "medical, and home and personal care products."
         ),
     },
+    {
+        "company": "Apple",
+        "question": "What products and services does Apple sell?",
+        "reference": (
+            "Apple designs and sells consumer electronics and services. Products "
+            "include iPhone, Mac, iPad, and wearables/home/accessories (Apple "
+            "Watch, AirPods). Services include the App Store, iCloud, Apple "
+            "Music, AppleCare, and advertising."
+        ),
+    },
+    {
+        "company": "NVIDIA",
+        "question": "What are NVIDIA's reportable segments?",
+        "reference": (
+            "NVIDIA reports in two segments: Compute & Networking and Graphics."
+        ),
+    },
+    {
+        "company": "Amazon",
+        "question": "What are Amazon's reportable segments?",
+        "reference": (
+            "Amazon reports in three segments: North America, International, and "
+            "AWS (Amazon Web Services)."
+        ),
+    },
 ]
