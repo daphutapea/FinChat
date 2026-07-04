@@ -28,12 +28,14 @@ citations** — instead of making things up.
 
 - **Grounded answers with citations** — every response is backed by excerpts
   from real 10-K filings, shown in an expandable *Sources* panel.
-- **Answers financial figures (hybrid RAG)** — plain text RAG can't read numbers
-  out of financial-statement tables. FinChat also extracts each filing's
-  **XBRL** structured financials (revenue, net income, assets, cash flow…) and
-  a hybrid retriever *guarantees* those facts are in context for numeric
-  questions — so *"What was Apple's FY2023 revenue?"* returns **$383.29 billion**,
-  not a shrug.
+- **Answers financial figures, ratios & trends (hybrid RAG)** — plain text RAG
+  can't read numbers out of financial-statement tables. FinChat extracts each
+  filing's **XBRL** structured financials, **computes standard ratios**
+  (margins, liquidity, returns, EBITDA, turnover, free cash flow)
+  deterministically in Python, and builds **year-over-year trend** facts — then
+  a hybrid retriever *guarantees* these are in context for numeric questions.
+  So *"Apple's FY2023 revenue?"* → **$383.29B**, *"quick ratio?"* → **0.94**,
+  *"did its margin improve YoY?"* → answered straight from the data.
 - **Query routing ("knows where to look")** — FinChat detects which company a
   question is about and searches *only* that company's filings via metadata
   filtering, with graceful semantic fallback when the company is ambiguous.
