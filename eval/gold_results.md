@@ -1,6 +1,6 @@
 # FinChat Evaluation — Qualitative Capability Gold Set
 
-FinChat is graded by an LLM-as-judge on document-Q&A questions (business, segments, products) across the 18-company corpus -- the task it is designed for. Reference answers are drawn from the 10-K filings.
+FinChat is graded by an LLM-as-judge on document-Q&A questions (business, segments, products) across the corpus -- the task it is designed for. Reference answers are drawn from the 10-K filings.
 
 - **Questions:** 15
 - **CORRECT:** 13   **PARTIAL:** 2   **INCORRECT:** 0

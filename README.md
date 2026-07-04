@@ -142,7 +142,7 @@ committed index.
 
 - **Numeric/analytical** questions (ratios, margins) require computation over
   financial-statement tables — the main gap (see Evaluation).
-- The corpus is scoped to 18 companies' recent 10-Ks to stay laptop-friendly.
+- The corpus is scoped to 25 companies' recent 10-Ks to stay laptop-friendly.
 - Not financial advice — a portfolio/educational project.
 
 ---

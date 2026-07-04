@@ -93,7 +93,7 @@ def main() -> None:
     lines = [
         "# FinChat Evaluation — Qualitative Capability Gold Set\n",
         "FinChat is graded by an LLM-as-judge on document-Q&A questions "
-        "(business, segments, products) across the 18-company corpus -- the task "
+        "(business, segments, products) across the corpus -- the task "
         "it is designed for. Reference answers are drawn from the 10-K filings.\n",
         f"- **Questions:** {n}",
         f"- **CORRECT:** {correct}   **PARTIAL:** {partial}   "

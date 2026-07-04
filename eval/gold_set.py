@@ -1,4 +1,4 @@
-"""Qualitative capability gold set for FinChat (18-company EDGAR corpus).
+"""Qualitative capability gold set for FinChat (SEC EDGAR corpus).
 
 These are document-Q&A questions (business, segments, products, geographies) --
 the task FinChat is designed for -- with reference answers from the companies'
