@@ -53,14 +53,14 @@ git push space main
 
 The Space will build (install `requirements.txt`) and start. **On first load,
 the app builds the vector store itself** (downloads the dataset + embeds the
-chunks). On free CPU this takes roughly **5–8 minutes** the first time — the UI
-shows *"Preparing the knowledge base…"*. After that it's fast.
+chunks). On free CPU this takes roughly **5-8 minutes** the first time - the UI
+shows *"Preparing the knowledge base..."*. After that it's fast.
 
 ---
 
-## 4. (Optional) Instant cold starts — commit the prebuilt index
+## 4. (Optional) Instant cold starts - commit the prebuilt index
 
-Free Spaces sleep after inactivity and rebuild the index on wake (~5–8 min),
+Free Spaces sleep after inactivity and rebuild the index on wake (~5-8 min),
 which is slow for someone clicking your link cold. To make cold starts
 **instant**, commit the prebuilt vector store using **git-lfs** (it's ~66 MB).
 
@@ -96,7 +96,7 @@ Now `ensure_index()` finds the committed store and skips the rebuild entirely.
 
 1. Open your Space URL.
 2. Wait for the first load (see the spinner if it's building).
-3. Ask: *"What are AMD's main business risks?"* — you should get a grounded
+3. Ask: *"What are AMD's main business risks?"* - you should get a grounded
    answer with a *Sources* panel and a routing badge.
 4. Add the live link to the top of `README.md` and to your portfolio.
 

@@ -1,8 +1,8 @@
-# FinChat API (FastAPI) — backend dependencies for the headless Space.
+# FinChat API (FastAPI) - backend dependencies for the headless Space.
 #
 # The RAG stack is pinned to the SAME versions verified end-to-end in the main
 # requirements.txt (Python 3.12). Unpinned installs previously resolved a
-# different stack and broke chromadb's storage engine at startup — keep these
+# different stack and broke chromadb's storage engine at startup - keep these
 # pins in sync with ../requirements.txt.
 
 # --- web server ---

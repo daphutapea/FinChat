@@ -91,7 +91,7 @@ def main() -> None:
     partial = sum(1 for _i, _r, v, _j in results if v == "PARTIAL")
 
     lines = [
-        "# FinChat Evaluation — Qualitative Capability Gold Set\n",
+        "# FinChat Evaluation - Qualitative Capability Gold Set\n",
         "FinChat is graded by an LLM-as-judge on document-Q&A questions "
         "(business, segments, products) across the corpus -- the task "
         "it is designed for. Reference answers are drawn from the 10-K filings.\n",

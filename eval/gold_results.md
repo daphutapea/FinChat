@@ -1,4 +1,4 @@
-# FinChat Evaluation — Qualitative Capability Gold Set
+# FinChat Evaluation - Qualitative Capability Gold Set
 
 FinChat is graded by an LLM-as-judge on document-Q&A questions (business, segments, products) across the corpus -- the task it is designed for. Reference answers are drawn from the 10-K filings.
 
@@ -133,7 +133,7 @@ Sources:
 - **Company:** PepsiCo  |  **Routed to:** PEP  |  **Verdict:** CORRECT
 - **Judge:** The system answer accurately conveys the key facts of the reference, including the types of products PepsiCo sells (beverages and convenient foods) and some of its notable brands.
 - **Reference:** PepsiCo makes and sells convenient foods (snacks) and beverages. Its brands include Pepsi, Lay's, Gatorade, Quaker, and Tropicana, sold across North America and international markets.
-- **FinChat:** PepsiCo sells a wide variety of beverages and convenient foods, including brands such as Lay’s, Doritos, Cheetos, Gatorade, Pepsi-Cola, Mountain Dew, Quaker, and SodaStream. Specifically, their beverage brands include 7UP, Diet Pepsi, Pepsi, and Pepsi Max, among others. They also sell sparkling water makers and related products through SodaStream. Additionally, their food brands include PopCorners, Quaker Chewy, Ruffles, and SunChips, among others. 
+- **FinChat:** PepsiCo sells a wide variety of beverages and convenient foods, including brands such as Lay's, Doritos, Cheetos, Gatorade, Pepsi-Cola, Mountain Dew, Quaker, and SodaStream. Specifically, their beverage brands include 7UP, Diet Pepsi, Pepsi, and Pepsi Max, among others. They also sell sparkling water makers and related products through SodaStream. Additionally, their food brands include PopCorners, Quaker Chewy, Ruffles, and SunChips, among others. 
 PepsiCo, FY2022
 Sources:
 [1] PepsiCo 10-K (FY2022)
@@ -224,7 +224,7 @@ Sources:
 - **FinChat:** Amazon's reportable segments are: 
 1. North America, 
 2. International, and 
-3. Amazon Web Services (“AWS”). 
+3. Amazon Web Services ("AWS"). 
 Amazon (FY2023)
 
 Sources:

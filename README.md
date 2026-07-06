@@ -8,13 +8,13 @@ app_port: 7860
 pinned: false
 ---
 
-# 💬 FinChat — Chat with SEC 10-K Filings
+# 💬 FinChat - Chat with SEC 10-K Filings
 
 FinChat is a **Retrieval-Augmented Generation (RAG)** chatbot that answers
 questions about public companies using their **SEC 10-K annual filings**.
 Ask *"What are AMD's main business risks?"* and FinChat finds the relevant
-passages in the filings and answers — **grounded in the source, with
-citations** — instead of making things up.
+passages in the filings and answers - **grounded in the source, with
+citations** - instead of making things up.
 
 > Portfolio project · Retrieval-Augmented Generation over financial documents.
 
@@ -24,30 +24,30 @@ citations** — instead of making things up.
 
 ## ✨ Features
 
-- **Grounded answers with citations** — every response is backed by excerpts
+- **Grounded answers with citations** - every response is backed by excerpts
   from real 10-K filings, shown in an expandable *Sources* panel.
-- **Answers financial figures, ratios & trends (hybrid RAG)** — plain text RAG
+- **Answers financial figures, ratios & trends (hybrid RAG)** - plain text RAG
   can't read numbers out of financial-statement tables. FinChat extracts each
   filing's **XBRL** structured financials, **computes standard ratios**
   (margins, liquidity, returns, EBITDA, turnover, free cash flow)
-  deterministically in Python, and builds **year-over-year trend** facts — then
+  deterministically in Python, and builds **year-over-year trend** facts - then
   a hybrid retriever *guarantees* these are in context for numeric questions.
   So *"Apple's FY2023 revenue?"* → **$383.29B**, *"quick ratio?"* → **0.94**,
   *"did its margin improve YoY?"* → answered straight from the data.
-- **Query routing ("knows where to look")** — FinChat detects which company a
+- **Query routing ("knows where to look")** - FinChat detects which company a
   question is about and searches *only* that company's filings via metadata
   filtering, with graceful semantic fallback when the company is ambiguous.
-- **Refuses to hallucinate** — if the answer isn't in the filings, it says so.
-- **Benchmarked** — evaluated by an LLM-as-judge on a capability gold set
+- **Refuses to hallucinate** - if the answer isn't in the filings, it says so.
+- **Benchmarked** - evaluated by an LLM-as-judge on a capability gold set
   (100%) and the external FinanceBench benchmark (see [Evaluation](#-evaluation)).
-- **100% free stack** — local embeddings + a free LLM API. No paid keys.
+- **100% free stack** - local embeddings + a free LLM API. No paid keys.
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-INGESTION (once) — two tracks per filing
+INGESTION (once) - two tracks per filing
   10-K TEXT       ──► split into chunks ───────────┐
   XBRL FINANCIALS ──► "label: value" fact chunks ──┴─► embed ──► ChromaDB
 
@@ -67,7 +67,7 @@ QUERY (per question)
 | Data          | SEC 10-K text **+ XBRL financials** via `edgartools` |
 | Evaluation    | Capability gold set + FinanceBench, LLM-as-judge  |
 
-**Corpus — 25 recognizable companies (FY2021–2024 10-Ks):** Apple, Microsoft,
+**Corpus - 25 recognizable companies (FY2021-2024 10-Ks):** Apple, Microsoft,
 Alphabet (Google), Amazon, NVIDIA, Tesla, AMD, JPMorgan Chase, American
 Express, Boeing, Walmart, PepsiCo, Coca-Cola, Amcor, 3M, Johnson & Johnson,
 CVS Health, Pfizer, AES, Verizon, Best Buy, Adobe, Ulta Beauty, Nike, and
@@ -106,7 +106,7 @@ python -m eval.run_eval         # FinanceBench eval
 FinChat is graded by an **LLM-as-judge** two ways: on the task it's built for,
 and against a hard external benchmark.
 
-**1. Capability — qualitative document Q&A**
+**1. Capability - qualitative document Q&A**
 ([`eval/gold_results.md`](eval/gold_results.md))
 
 A 15-question gold set (business, segments, products) across the corpus, with
@@ -116,7 +116,7 @@ reference answers from the filings.
 |---|---|---|---|
 | 13 | 2 | 0 | **93%** |
 
-**2. FinanceBench — hard external benchmark**
+**2. FinanceBench - hard external benchmark**
 ([`eval/results.md`](eval/results.md))
 
 Scored on [FinanceBench](https://huggingface.co/datasets/PatronusAI/financebench)
@@ -128,9 +128,9 @@ financials + computed-ratios layer** more than **doubled** the score:
 | Text-only RAG | 20% (6/30) | 0% | 24% |
 | **+ XBRL financials & ratios** | **50%** (15/30) | **50%** | **52%** |
 
-The jump comes from numeric questions the text-only system couldn't touch —
+The jump comes from numeric questions the text-only system couldn't touch -
 quick ratio, gross-margin change, inventory turnover, working capital, dividend
-payout — now answered from structured data. The remaining gap is **multi-step
+payout - now answered from structured data. The remaining gap is **multi-step
 reasoning** (*"excluding M&A, which segment dragged margins?"*), which needs
 deeper analytical logic (future work). For context, GPT-4 in a naive RAG setup
 scores **~19%** on FinanceBench.
@@ -139,7 +139,7 @@ scores **~19%** on FinanceBench.
 
 ## ☁️ Deployment
 
-Deployed to Hugging Face Spaces (free) — see **[DEPLOY.md](DEPLOY.md)**. The
+Deployed to Hugging Face Spaces (free) - see **[DEPLOY.md](DEPLOY.md)**. The
 ~21k-chunk vector store is prebuilt and shipped with the repo via **git-lfs**,
 so the Space starts instantly with no rebuild; `config.py` auto-detects the
 committed index.
@@ -153,7 +153,7 @@ committed index.
   analytical reasoning** (e.g. segment-level margin attribution) is the
   remaining gap.
 - The corpus is scoped to 25 companies' recent 10-Ks to stay laptop-friendly.
-- Not financial advice — a portfolio/educational project.
+- Not financial advice - a portfolio/educational project.
 
 ---
 

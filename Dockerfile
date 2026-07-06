@@ -1,4 +1,4 @@
-# FinChat API — headless FastAPI service for a Hugging Face Docker Space.
+# FinChat API - headless FastAPI service for a Hugging Face Docker Space.
 #
 # IMPORTANT: build context is the repo ROOT, so the image can COPY the RAG code
 # in src/ and the prebuilt vector index in vectorstore/ (shipped via git-lfs).

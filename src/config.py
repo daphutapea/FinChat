@@ -27,7 +27,7 @@ _default_store = (
 if os.getenv("FINCHAT_VECTORSTORE"):
     VECTORSTORE_DIR = Path(os.environ["FINCHAT_VECTORSTORE"])
 elif (_repo_store / "chroma.sqlite3").exists():
-    # A prebuilt index shipped with the repo (e.g. on Hugging Face Spaces) —
+    # A prebuilt index shipped with the repo (e.g. on Hugging Face Spaces) -
     # use it directly so the app never rebuilds on startup.
     VECTORSTORE_DIR = _repo_store
 else:

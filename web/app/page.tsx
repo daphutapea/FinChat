@@ -140,7 +140,7 @@ export default function Home() {
         </div>
 
         <div className="border-t border-white/5 px-5 py-3 text-[11px] text-slate-500">
-          Source: recent SEC 10-K filings (FY2021–2024). Educational project —
+          Source: recent SEC 10-K filings (FY2021-2024). Educational project -
           not financial advice.
         </div>
       </aside>
@@ -177,7 +177,7 @@ export default function Home() {
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={onKeyDown}
               rows={1}
-              placeholder="Ask about a company's 10-K — e.g. What were AMD's main risk factors?"
+              placeholder="Ask about a company's 10-K - e.g. What were AMD's main risk factors?"
               className="max-h-40 flex-1 resize-none rounded-2xl border border-white/10 bg-slate-900/80 px-4 py-3 text-sm text-slate-100 placeholder:text-slate-500 focus:border-teal-500/50 focus:outline-none focus:ring-2 focus:ring-teal-500/20"
             />
             <button
@@ -213,7 +213,7 @@ function Welcome({ onPick }: { onPick: (q: string) => void }) {
         Chat with SEC 10-K filings
       </h1>
       <p className="mx-auto mt-2 max-w-md text-sm text-slate-400">
-        Grounded, cited answers about 25 major companies&apos; annual reports —
+        Grounded, cited answers about 25 major companies&apos; annual reports -
         including financial figures and ratios computed from the filings.
       </p>
       <div className="mx-auto mt-8 grid max-w-xl grid-cols-1 gap-2 sm:grid-cols-2">
@@ -300,7 +300,7 @@ function Sources({ sources }: { sources: Source[] }) {
               </div>
               <p className="text-xs leading-relaxed text-slate-400">
                 {s.excerpt}
-                {s.excerpt.length >= 500 ? "…" : ""}
+                {s.excerpt.length >= 500 ? "..." : ""}
               </p>
             </div>
           ))}
@@ -321,7 +321,7 @@ function TypingIndicator() {
         <Dot delay="0.2s" />
         <Dot delay="0.4s" />
         <span className="ml-2 text-xs text-slate-500">
-          Searching the filings…
+          Searching the filings...
         </span>
       </div>
     </div>

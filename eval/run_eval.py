@@ -5,7 +5,7 @@ present in our EDGAR corpus, then grades each answer against FinanceBench's gold
 answer with an LLM-as-judge. Writes eval/results.md.
 
 FinanceBench is a deliberately hard, expert-written benchmark, so the goal is an
-honest, measured score on real questions — not a perfect one.
+honest, measured score on real questions - not a perfect one.
 
 Run from the project root:
     python -m eval.run_eval
@@ -130,7 +130,7 @@ def main() -> None:
     partial = sum(1 for _e, _r, v, _j in results if v == "PARTIAL")
 
     lines = [
-        "# FinChat Evaluation — FinanceBench (corpus-aligned subset)\n",
+        "# FinChat Evaluation - FinanceBench (corpus-aligned subset)\n",
         "FinChat is graded by an LLM-as-judge against gold answers from the "
         "[FinanceBench](https://huggingface.co/datasets/PatronusAI/financebench) "
         "benchmark, on every 10-K question whose company + fiscal year is in the "

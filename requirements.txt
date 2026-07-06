@@ -1,4 +1,4 @@
-# FinChat — dependencies
+# FinChat - dependencies
 # Install with:  pip install -r requirements.txt
 #
 # Versions are PINNED to the combination verified end-to-end locally

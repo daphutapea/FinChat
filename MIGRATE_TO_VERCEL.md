@@ -5,7 +5,7 @@ This guide moves FinChat from a single **Streamlit Space** to a proper
 
 - a custom **Next.js chat UI on Vercel** (your own design + domain), and
 - a **headless FastAPI backend on a Hugging Face Docker Space** (your existing
-  RAG code — nobody ever sees Hugging Face's UI).
+  RAG code - nobody ever sees Hugging Face's UI).
 
 Nothing about the actual RAG logic changes: the API just wraps the same
 `answer()` function in [`src/rag.py`](src/rag.py) that the Streamlit app used.
@@ -27,7 +27,7 @@ Nothing about the actual RAG logic changes: the API just wraps the same
 ```
 
 **Why this shape?** Vercel can't run Python/Streamlit or load PyTorch, so the
-model has to live on a Python host. The browser never calls that host directly —
+model has to live on a Python host. The browser never calls that host directly -
 it calls a Vercel *proxy route*, which keeps the backend URL hidden and lets a
 shared secret protect your Groq daily quota from abuse.
 
@@ -53,14 +53,14 @@ The backend has been smoke-tested locally: `/health`, `/companies` (returns all
 ## Prerequisites
 
 - A **Hugging Face** account (you have one) and **git-lfs** (installed).
-- A **Vercel** account — sign up free at <https://vercel.com> with your GitHub.
+- A **Vercel** account - sign up free at <https://vercel.com> with your GitHub.
 - A **GitHub** repo for the `web/` app (Vercel deploys from GitHub).
-- (Optional, for running the UI locally) **Node.js 18+** — <https://nodejs.org>.
+- (Optional, for running the UI locally) **Node.js 18+** - <https://nodejs.org>.
   You do **not** need Node to deploy; Vercel builds it in the cloud.
 
 ---
 
-# PART A — Deploy the backend (Hugging Face Docker Space)
+# PART A - Deploy the backend (Hugging Face Docker Space)
 
 ### A1. Confirm your Groq key
 
@@ -125,10 +125,10 @@ In the Space: **Settings → Variables and secrets → New secret**
 | Type   | Name              | Value |
 |--------|-------------------|-------|
 | secret | `GROQ_API_KEY`    | your Groq key |
-| secret | `API_SECRET`      | any long random string (see below) — protects your quota |
+| secret | `API_SECRET`      | any long random string (see below) - protects your quota |
 | var    | `FRONTEND_ORIGIN` | *(optional)* your Vercel URL, e.g. `https://finchat.vercel.app` |
 
-Generate a random `API_SECRET` (keep it — you'll reuse it on Vercel):
+Generate a random `API_SECRET` (keep it - you'll reuse it on Vercel):
 
 ```bash
 python -c "import secrets; print(secrets.token_urlsafe(32))"
@@ -151,11 +151,11 @@ Test it (browser or curl):
 - `https://<username>-finchat-api.hf.space/companies` → the 25 companies
 - `https://<username>-finchat-api.hf.space/docs` → interactive Swagger UI
 
-Keep that base URL — Vercel needs it next.
+Keep that base URL - Vercel needs it next.
 
 ---
 
-# PART B — Deploy the front-end (Vercel)
+# PART B - Deploy the front-end (Vercel)
 
 ### B1. Put `web/` on GitHub
 
@@ -170,7 +170,7 @@ git push origin main
 ### B2. Import into Vercel
 
 1. <https://vercel.com/new> → **Import** your GitHub repo.
-2. **Root Directory:** click **Edit** and set it to **`web`**. *(critical — the
+2. **Root Directory:** click **Edit** and set it to **`web`**. *(critical - the
    Next.js app is in `web/`, not the repo root.)*
 3. Framework preset auto-detects **Next.js**. Leave build settings default.
 
@@ -186,11 +186,11 @@ In the import screen (or **Settings → Environment Variables**):
 ### B4. Deploy
 
 Click **Deploy**. In ~1 minute you'll get `https://<project>.vercel.app`. Open
-it and ask *"What are Boeing's business segments?"* — you should get a grounded
+it and ask *"What are Boeing's business segments?"* - you should get a grounded
 answer with a routing badge and an expandable **sources** panel.
 
 > **First request after idle:** the free HF Space sleeps after ~48h. The first
-> question then wakes it (can take 30–60s) and may show a "waking up" message —
+> question then wakes it (can take 30-60s) and may show a "waking up" message -
 > just ask again once it's warm. See *Keeping it warm* below.
 
 ### B5. (Optional) Custom domain
@@ -203,12 +203,12 @@ the DNS instructions. Now it's unmistakably a product.
 ## Running both locally (optional, needs Node)
 
 ```bash
-# terminal 1 — backend
+# terminal 1 - backend
 cd FinChat
 venv\Scripts\activate
 uvicorn api.main:app --port 7860
 
-# terminal 2 — frontend
+# terminal 2 - frontend
 cd FinChat/web
 npm install
 copy .env.local.example .env.local     # set BACKEND_URL=http://localhost:7860
@@ -219,15 +219,15 @@ npm run dev                             # http://localhost:3000
 
 ## After it works: tidy up
 
-1. **Update your portfolio site** — point the FinChat "Live Demo" link (in
+1. **Update your portfolio site** - point the FinChat "Live Demo" link (in
    `Web Porto Project/index.html`) from the old HF Space to your new Vercel URL.
    Update the CV's `[Deploy]` link too.
-2. **Retire the old Streamlit Space** — once the Vercel site is solid, you can
+2. **Retire the old Streamlit Space** - once the Vercel site is solid, you can
    delete `huggingface.co/spaces/<username>/Finchat` (the Streamlit one). Keep
-   the new `finchat-api` Space — it's the engine.
-3. **Keep the API warm (optional)** — so cold starts don't bite visitors, ping
+   the new `finchat-api` Space - it's the engine.
+3. **Keep the API warm (optional)** - so cold starts don't bite visitors, ping
    the Space once a day. Free option: a scheduled job at <https://cron-job.org>
-   hitting `https://<username>-finchat-api.hf.space/health` every 12–24h.
+   hitting `https://<username>-finchat-api.hf.space/health` every 12-24h.
 
 ---
 
@@ -235,7 +235,7 @@ npm run dev                             # http://localhost:3000
 
 Everything here stays on **free tiers**: Vercel Hobby (frontend), a free HF
 Docker Space (backend, ~16 GB RAM), and Groq's free LLM tier. The only limit is
-Groq's ~100k tokens/day — which the `API_SECRET` protects from strangers.
+Groq's ~100k tokens/day - which the `API_SECRET` protects from strangers.
 
 ---
 
@@ -244,7 +244,7 @@ Groq's ~100k tokens/day — which the `API_SECRET` protects from strangers.
 | Symptom | Fix |
 |---|---|
 | Space build fails on `COPY vectorstore/` | Run `git lfs install` and confirm `vectorstore/chroma.sqlite3` is a real file (not a tiny LFS pointer) before pushing. |
-| Space runs but `/companies` is empty | The index didn't ship — check the LFS push and that `FINCHAT_VECTORSTORE` points at `/home/user/app/vectorstore` (set in the Dockerfile). |
+| Space runs but `/companies` is empty | The index didn't ship - check the LFS push and that `FINCHAT_VECTORSTORE` points at `/home/user/app/vectorstore` (set in the Dockerfile). |
 | Vercel app: "Server is missing BACKEND_URL" | Set `BACKEND_URL` in Vercel env vars and **redeploy** (env changes need a new deploy). |
 | Every answer says "waking up / unreachable" | The Space is asleep or `BACKEND_URL` is wrong. Open the `/health` URL directly to wake/verify it. |
 | `401 Invalid or missing API key` | `API_SECRET` differs between the Space and Vercel. Make them identical, redeploy. |

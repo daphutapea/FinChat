@@ -22,15 +22,15 @@ st.caption(
 
 # On a fresh deployment (e.g. Hugging Face Spaces) the vector store won't exist
 # yet -- build it once on first load. On later runs this is a fast no-op.
-with st.spinner("Preparing the knowledge base (first run only, please wait)…"):
+with st.spinner("Preparing the knowledge base (first run only, please wait)..."):
     ensure_index()
 
 # --- sidebar: which companies are available ---------------------------------
 with st.sidebar:
     st.header("📚 Companies loaded")
     for ticker, name in available_companies():
-        st.markdown(f"- **{ticker}** — {name}")
-    st.caption("Source: recent SEC 10-K filings (FY2021–2023).")
+        st.markdown(f"- **{ticker}** - {name}")
+    st.caption("Source: recent SEC 10-K filings (FY2021-2023).")
 
 # --- starter questions (clickable examples) ---------------------------------
 STARTER_QUESTIONS = [
@@ -77,7 +77,7 @@ if prompt:
         with st.expander(f"📄 Sources ({len(result['sources'])})"):
             for i, doc in enumerate(result["sources"], 1):
                 st.markdown(f"**[{i}] {doc.metadata.get('source', '')}**")
-                st.write(doc.page_content[:500] + "…")
+                st.write(doc.page_content[:500] + "...")
 
     st.session_state.messages.append(
         {"role": "assistant", "content": result["answer"]}

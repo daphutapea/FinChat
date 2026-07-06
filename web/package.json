@@ -2,7 +2,7 @@
   "name": "finchat-web",
   "version": "1.0.0",
   "private": true,
-  "description": "FinChat — Next.js front-end (chat UI) that talks to the FinChat API.",
+  "description": "FinChat - Next.js front-end (chat UI) that talks to the FinChat API.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

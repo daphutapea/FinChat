@@ -10,7 +10,7 @@ pinned: false
 
 # FinChat API (headless)
 
-FastAPI backend for **FinChat** — a Retrieval-Augmented Generation chatbot over
+FastAPI backend for **FinChat** - a Retrieval-Augmented Generation chatbot over
 SEC 10-K filings. This Space is **headless**: it has no UI of its own. It serves
 a JSON API that the FinChat web app (hosted on Vercel) calls.
 

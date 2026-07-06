@@ -10,7 +10,7 @@ export async function GET() {
   }
   try {
     const res = await fetch(`${BACKEND_URL}/companies`, {
-      // Companies rarely change — let Next cache the list for an hour.
+      // Companies rarely change - let Next cache the list for an hour.
       next: { revalidate: 3600 },
     });
     if (!res.ok) return NextResponse.json([]);

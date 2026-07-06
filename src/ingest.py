@@ -128,7 +128,7 @@ def build_index() -> None:
     """
     docs = fetch_documents()
     if not docs:
-        raise SystemExit("No filings were fetched — check tickers/years in config.py.")
+        raise SystemExit("No filings were fetched - check tickers/years in config.py.")
     print(f"Total: {len(docs)} chunks from {len(config.TARGET_FILINGS)} target filings.")
     build_vectorstore(docs)
 

@@ -1,4 +1,4 @@
-# FinChat — Web front-end (Next.js)
+# FinChat - Web front-end (Next.js)
 
 A polished chat UI for **FinChat**, deployed on **Vercel**. It has no model code
 of its own: it calls the FinChat API (a headless Hugging Face Docker Space) over

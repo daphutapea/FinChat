@@ -1,4 +1,4 @@
-# FinChat Evaluation — FinanceBench (corpus-aligned subset)
+# FinChat Evaluation - FinanceBench (corpus-aligned subset)
 
 FinChat is graded by an LLM-as-judge against gold answers from the [FinanceBench](https://huggingface.co/datasets/PatronusAI/financebench) benchmark, on every 10-K question whose company + fiscal year is in the corpus. FinanceBench is expert-written and intentionally hard.
 
@@ -215,7 +215,7 @@ Sources:
 - **Company / FY:** Boeing 2022  |  **Routed to:** BA  |  **Verdict:** PARTIAL
 - **Judge:** The system answer correctly identifies the relevant legal battles but incorrectly states that they were resolved in 2021, when in fact the reference answer indicates that the lawsuits are ongoing.
 - **FinanceBench gold:** Yes. Multiple lawsuits have been filed against Boeing resulting from a 2018 Lion Air crash and a 2019 Ethiopian Airlines crash.
-- **FinChat:** Boeing has reported legal actions related to the October 29, 2018 accident of Lion Air Flight 610 and the March 10, 2019 accident of Ethiopian Airlines Flight 302. However, it is mentioned that during 2021, Boeing entered into a Deferred Prosecution Agreement with the U.S. Department of Justice, which resolved the Department of Justice’s investigation. 
+- **FinChat:** Boeing has reported legal actions related to the October 29, 2018 accident of Lion Air Flight 610 and the March 10, 2019 accident of Ethiopian Airlines Flight 302. However, it is mentioned that during 2021, Boeing entered into a Deferred Prosecution Agreement with the U.S. Department of Justice, which resolved the Department of Justice's investigation. 
 Boeing, FY2022. 
 Sources:
 [1] Boeing 10-K (FY2022)

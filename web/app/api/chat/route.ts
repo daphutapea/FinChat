@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(
       {
         error:
-          "Couldn't reach the FinChat engine — it may be waking up from sleep. Please try again in a moment.",
+          "Couldn't reach the FinChat engine - it may be waking up from sleep. Please try again in a moment.",
       },
       { status: 502 }
     );
