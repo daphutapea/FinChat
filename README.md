@@ -18,7 +18,7 @@ citations** — instead of making things up.
 
 > Portfolio project · Retrieval-Augmented Generation over financial documents.
 
-**🔗 Live demo:** <https://huggingface.co/spaces/dahutapea/Finchat>
+**🔗 Live demo:** <https://finchat-chi.vercel.app/>
 
 ---
 
@@ -126,7 +126,7 @@ financials + computed-ratios layer** more than **doubled** the score:
 | Setup | Accuracy | metrics-generated | domain-relevant |
 |---|---|---|---|
 | Text-only RAG | 20% (6/30) | 0% | 24% |
-| **+ XBRL financials & ratios** | **45%** (13.5/30) | **50%** | **50%** |
+| **+ XBRL financials & ratios** | **50%** (15/30) | **50%** | **52%** |
 
 The jump comes from numeric questions the text-only system couldn't touch —
 quick ratio, gross-margin change, inventory turnover, working capital, dividend
