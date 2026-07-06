@@ -1,12 +1,10 @@
 ---
-title: FinChat
+title: FinChat API
 emoji: 💬
 colorFrom: indigo
-colorTo: blue
-sdk: streamlit
-sdk_version: 1.58.0
-python_version: "3.12"
-app_file: app.py
+colorTo: teal
+sdk: docker
+app_port: 7860
 pinned: false
 ---
 
