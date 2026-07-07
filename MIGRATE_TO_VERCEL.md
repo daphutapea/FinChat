@@ -11,19 +11,19 @@ Nothing about the actual RAG logic changes: the API just wraps the same
 `answer()` function in [`src/rag.py`](src/rag.py) that the Streamlit app used.
 
 ```
-                        ┌────────────────────────────────────────────┐
-   Browser  ───────────►│  VERCEL  (this is "the product")           │
-                        │   /            chat UI      (web/app/page.tsx)
-                        │   /api/chat    server proxy ───────────────┐│
-                        └────────────────────────────────────────────┘│
-                                                                       │  (server-to-server,
-                                                                       │   backend URL + secret
-                                                                       ▼   stay private)
-                        ┌────────────────────────────────────────────┐
+                        ┌───────────────────────────────────────────────┐
+   Browser  ───────────►│  VERCEL  (this is "the product")              │
+                        │   /            chat UI      (web/app/page.tsx)│
+                        │   /api/chat    server proxy ───────────────┐  │
+                        └────────────────────────────────────────────┘  │
+                                                                        │  (server-to-server,
+                                                                        │   backend URL + secret
+                                                                        ▼   stay private)
+                        ┌─────────────────────────────────────────────┐
                         │  HUGGING FACE DOCKER SPACE  (headless API)  │
                         │   POST /chat  ──► src.rag.answer()          │
                         │   GET  /companies, /health, /docs           │
-                        └────────────────────────────────────────────┘
+                        └─────────────────────────────────────────────┘
 ```
 
 **Why this shape?** Vercel can't run Python/Streamlit or load PyTorch, so the
