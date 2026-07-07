@@ -18,7 +18,7 @@ citations** - instead of making things up.
 
 > Portfolio project · Retrieval-Augmented Generation over financial documents.
 
-**🔗 Live demo:** <https://finchat-chi.vercel.app/>
+**🔗 Live demo:** <https://finchat-orcin.vercel.app/>
 
 ---
 
