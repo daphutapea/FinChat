@@ -18,17 +18,48 @@ const STARTERS = [
   "What are the main risks AMD identifies?",
 ];
 
+// The corpus is a fixed set of 25 filings, so we ship the list statically -
+// the sidebar always shows every company even if the backend is cold or asleep.
+// The fetch below still refreshes it from the live API when that succeeds.
+const FALLBACK_COMPANIES: Company[] = [
+  { ticker: "AAPL", name: "Apple" },
+  { ticker: "ADBE", name: "Adobe" },
+  { ticker: "AES", name: "AES Corporation" },
+  { ticker: "AMCR", name: "Amcor" },
+  { ticker: "AMD", name: "Advanced Micro Devices" },
+  { ticker: "AMZN", name: "Amazon" },
+  { ticker: "AXP", name: "American Express" },
+  { ticker: "BA", name: "Boeing" },
+  { ticker: "BBY", name: "Best Buy" },
+  { ticker: "CVS", name: "CVS Health" },
+  { ticker: "GLW", name: "Corning" },
+  { ticker: "GOOGL", name: "Alphabet (Google)" },
+  { ticker: "JNJ", name: "Johnson & Johnson" },
+  { ticker: "JPM", name: "JPMorgan Chase" },
+  { ticker: "KO", name: "Coca-Cola" },
+  { ticker: "MMM", name: "3M" },
+  { ticker: "MSFT", name: "Microsoft" },
+  { ticker: "NKE", name: "Nike" },
+  { ticker: "NVDA", name: "NVIDIA" },
+  { ticker: "PEP", name: "PepsiCo" },
+  { ticker: "PFE", name: "Pfizer" },
+  { ticker: "TSLA", name: "Tesla" },
+  { ticker: "ULTA", name: "Ulta Beauty" },
+  { ticker: "VZ", name: "Verizon" },
+  { ticker: "WMT", name: "Walmart" },
+];
+
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [companies, setCompanies] = useState<Company[]>([]);
+  const [companies, setCompanies] = useState<Company[]>(FALLBACK_COMPANIES);
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     fetch("/api/companies")
       .then((r) => r.json())
-      .then((data) => Array.isArray(data) && setCompanies(data))
+      .then((data) => Array.isArray(data) && data.length > 0 && setCompanies(data))
       .catch(() => {});
   }, []);
 
@@ -122,7 +153,7 @@ export default function Home() {
             Companies loaded
           </span>
           <span className="rounded-full bg-teal-500/10 px-2 py-0.5 text-xs font-semibold text-teal-300">
-            {companies.length || 25}
+            {companies.length}
           </span>
         </div>
         <div className="flex-1 space-y-1 overflow-y-auto px-3 pb-4">
