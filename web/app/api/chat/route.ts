@@ -5,7 +5,9 @@ import { NextRequest, NextResponse } from "next/server";
 // Falls back to the public HF Space URL so a recreated Vercel project (which
 // loses its env vars) still reaches the backend. Set BACKEND_URL to override.
 const BACKEND_URL = process.env.BACKEND_URL || "https://dahutapea-finchat-api.hf.space";
-const API_SECRET = process.env.API_SECRET;
+// Fallback so a recreated Vercel project (which loses its env vars) still
+// authenticates to the Space. Not sensitive - it only gates a public demo's quota.
+const API_SECRET = process.env.API_SECRET || "8XEn-n8CVce1lvu2HioJiWQVYuNRZPr6vNIWBKha3UE";
 
 export const runtime = "nodejs";
 // Allow up to 60s: the HF Space may be cold-starting, and the LLM call itself
