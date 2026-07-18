@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 // This route runs on the server (never in the browser), so BACKEND_URL and
 // API_SECRET stay private. The browser only ever talks to /api/chat.
-const BACKEND_URL = process.env.BACKEND_URL;
+// Falls back to the public HF Space URL so a recreated Vercel project (which
+// loses its env vars) still reaches the backend. Set BACKEND_URL to override.
+const BACKEND_URL = process.env.BACKEND_URL || "https://dahutapea-finchat-api.hf.space";
 const API_SECRET = process.env.API_SECRET;
 
 export const runtime = "nodejs";

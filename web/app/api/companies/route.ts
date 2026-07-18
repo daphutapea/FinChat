@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 
-const BACKEND_URL = process.env.BACKEND_URL;
+const BACKEND_URL = process.env.BACKEND_URL || "https://dahutapea-finchat-api.hf.space";
 
 export const runtime = "nodejs";
 
