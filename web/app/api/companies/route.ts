@@ -10,8 +10,10 @@ export async function GET() {
   }
   try {
     const res = await fetch(`${BACKEND_URL}/companies`, {
-      // Companies rarely change - let Next cache the list for an hour.
-      next: { revalidate: 3600 },
+      // Deliberately uncached: this call doubles as a wake-up ping on page load,
+      // so a sleeping Space is already warming by the time the user asks. A cold
+      // Space can otherwise exceed Vercel's 60s function limit and time out.
+      cache: "no-store",
     });
     if (!res.ok) return NextResponse.json([]);
     const data = await res.json();

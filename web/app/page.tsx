@@ -109,7 +109,7 @@ export default function Home() {
         {
           role: "assistant",
           content:
-            "Couldn't reach the FinChat engine. Please try again in a moment.",
+            "The engine was asleep and is waking up - this can take up to a minute the first time. Please ask again in a moment.",
           error: true,
         },
       ]);
